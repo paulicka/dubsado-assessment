@@ -47,6 +47,6 @@ Generating employee tree...
 [demoteEmployee]: Demoted employee (demoted Xavier and replaced with Maria)
 
 [getBoss]: Bill's boss is Jared
-[getSubordinate]: Maria's subordinates are Xavier, Morty, Jared
+[getSubordinates]: Maria's subordinates are Xavier, Morty, Jared
 
 ```

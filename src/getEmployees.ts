@@ -1,3 +1,5 @@
+import {TreeNode} from './manageEmployees';
+
 /**
  * Given an employee, will find the node above (if any).
  * 
@@ -5,8 +7,8 @@
  * @param {string} employeeName
  * @returns {TreeNode}
  */
-function getBoss() {
-
+function getBoss(tree: TreeNode, employeeName: string) : TreeNode {
+  return null;
 }
 
 /**
@@ -17,8 +19,8 @@ function getBoss() {
  * @param {string} employeeName
  * @returns {TreeNode[]}
  */
-function getSubordinates() {
-
+function getSubordinates(tree: TreeNode, employeeName: string) : TreeNode[] {
+  return [];
 }
 
 /**
@@ -29,6 +31,6 @@ function getSubordinates() {
  * @param {string} employeeName
  * @returns {TreeNode}
  */
-function findLowestEmployee() {
-
+function findLowestEmployee(tree: TreeNode) : TreeNode {
+  return null;
 }
