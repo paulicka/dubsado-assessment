@@ -1,3 +1,5 @@
+
+// Helper interface for parsing employees.json
 export interface Employee {
     name: string;
     jobTitle: string;
@@ -5,6 +7,7 @@ export interface Employee {
     salary: string;
   }
 
+// The Employee TreeNode (should probably be renamed to Employee at some point...)
 export class TreeNode {
     name: string;
     jobTitle: string;
@@ -24,9 +27,11 @@ export class TreeNode {
     }
 }
 
+// A lookup table for finding TreeNodes quickly by name
 export var lookup: Map<string, TreeNode> | null;
     
 
+// Helper method to go from JSONObjects to TreeNodes
 function generateTreeNode(employee: Employee) : TreeNode {
     
     var name = employee["name"];
@@ -69,10 +74,6 @@ export function generateCompanyStructure(employees : Employee[]) : TreeNode {
       tree = node;
     }
   });
-
-  // console.log(tree);
-
-  // tree.lookup = lookup;  // Keep lookup table around for future operations...
   
   return tree;
 }
