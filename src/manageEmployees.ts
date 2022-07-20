@@ -14,8 +14,6 @@ export class TreeNode {
     boss: TreeNode | null;
     subordinates: Array<TreeNode>;
 
-    lookup: Map<string, TreeNode> | null;
-    
     constructor(name: string, jobTitle: string, email: string, salary: number, boss: TreeNode | null) {
         this.name = name;
 	this.jobTitle = jobTitle;
@@ -23,11 +21,14 @@ export class TreeNode {
 	this.salary = salary;
         this.boss = boss;	      
         this.subordinates = [];
-	this.lookup = null;
     }
 }
 
-function generateTreeNode(lookup: Map<string, TreeNode>, employee: Employee) : TreeNode {
+export var lookup: Map<string, TreeNode> | null;
+    
+
+function generateTreeNode(employee: Employee) : TreeNode {
+    
     var name = employee["name"];
     var email = "";
     var i = name.indexOf('@');
@@ -59,11 +60,11 @@ function generateTreeNode(lookup: Map<string, TreeNode>, employee: Employee) : T
 export function generateCompanyStructure(employees : Employee[]) : TreeNode {
   var tree : TreeNode = null;
   
-  var lookup = new Map<string, TreeNode>();
+  lookup = new Map<string, TreeNode>();
   
   employees.forEach((employee: Employee) => {
     //console.log("name ", name, " email ", email);
-    var node : TreeNode = generateTreeNode(lookup, employee);
+    var node : TreeNode = generateTreeNode(employee);
     if (node.boss === null){
       tree = node;
     }
@@ -71,7 +72,7 @@ export function generateCompanyStructure(employees : Employee[]) : TreeNode {
 
   // console.log(tree);
 
-  tree.lookup = lookup;  // Keep lookup table around for future operations...
+  // tree.lookup = lookup;  // Keep lookup table around for future operations...
   
   return tree;
 }
@@ -93,7 +94,7 @@ export function hireEmployee(tree: TreeNode, newEmployee: Object, bossName: stri
   var employee : Employee = newEmployee as Employee;
   employee.boss = bossName;
   
-  var node : TreeNode = generateTreeNode(tree.lookup, employee);
+  var node : TreeNode = generateTreeNode(employee);
 
   console.log("[hireEmployee]: Added new employee (" + employee.name + ") with " + employee.boss + " as their boss")
 }
@@ -107,7 +108,7 @@ export function hireEmployee(tree: TreeNode, newEmployee: Object, bossName: stri
  * @returns {void}
  */
 export function fireEmployee(tree: TreeNode, name: string) : void {
-    var employee : TreeNode = tree.lookup.get(name);
+    var employee : TreeNode = lookup.get(name);
     console.assert(employee);
 
     var boss : TreeNode = employee.boss;
@@ -140,7 +141,7 @@ export function fireEmployee(tree: TreeNode, name: string) : void {
 	    sub.boss = subordinate;
 	});
     }
-    tree.lookup.delete(name);
+    lookup.delete(name);
     console.log("[fireEmployee]: Fired " + name + " and replaced with " + subordinate.name);
 }
 
@@ -153,7 +154,37 @@ export function fireEmployee(tree: TreeNode, name: string) : void {
  * @returns {void}
  */
 export function promoteEmployee(tree: TreeNode, employeeName: string) : void {
-       tree.lookup.get(employeeName);
+    var employee : TreeNode = lookup.get(employeeName);
+    console.assert(employee !== null);
+    console.assert(employee.boss !== null);
+    
+    /*
+     *  Remove employee from boss' subordinates
+     *  Remove boss from boss' boss' subordinates
+     *  Add boss to employee subordinates
+     *  Set boss' boss to employee
+     *  Add all boss' subordinates to employee subordinates (removing all boss subordinates)
+     */
+    var boss : TreeNode = employee.boss;
+    boss.subordinates.forEach(sub => {
+	if (sub !== employee){
+	    sub.boss = employee;
+	    employee.subordinates.push(sub);
+	}
+    });
+    boss.subordinates = [];
+    employee.subordinates.push(boss);
+    
+    var bossBoss : TreeNode | null = boss.boss;
+    if (bossBoss !== null){
+	bossBoss.subordinates = boss.boss.subordinates.filter(sub => sub != boss);
+	bossBoss.subordinates.push(employee);
+    }
+
+    boss.boss = employee;
+    employee.boss = bossBoss;
+    
+    console.log("[promoteEmployee]: Promoted " + employee.name + " and made " + boss.name + " their subordinate");
 }
 
 /**
@@ -165,6 +196,6 @@ export function promoteEmployee(tree: TreeNode, employeeName: string) : void {
  * @param {string} subordinateName the new boss
  * @returns {void}
  */
-function demoteEmployee(tree: TreeNode, employeeName: string, subordinateName: string) : void {
-
+export function demoteEmployee(tree: TreeNode, employeeName: string, subordinateName: string) : void {
+    promoteEmployee(tree, subordinateName);
 }

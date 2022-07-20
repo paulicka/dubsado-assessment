@@ -1,10 +1,21 @@
 
+## Installing Prerequisites
+
+For Linux Mint Cinnamon, the following were necessary to install all the prerequisites.
+
 ```
 curl -sS https://dl.yarnpkg.com/debian/pubkey.gpg | sudo apt-key add -
 echo "deb https://dl.yarnpkg.com/debian/ stable main" | sudo tee /etc/apt/sources.list.d/yarn.list
 sudo apt update
 sudo apt install yarn
 sudo apt install node-typescript
+```
+
+## Running the App
+
+To run the code, as in the README.md, just:
+```
+$ yarn start
 ```
 
 Reviewing employees.json
