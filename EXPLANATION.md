@@ -75,3 +75,11 @@ There is simply a flag to change the console output.
 ## EXTRA CREDIT
 
 I implemented findLowestEmployee().  Note that zero (0) is the top of the tree, not one (1).
+
+Oh, and what to do if there are many lowest employees?
+
+Right now it just picks the first based on the sort function.
+
+Also, the function signature returns a TreeNode, while the comment said it should also return the depth.
+
+I just log it to the console to make it "work".
