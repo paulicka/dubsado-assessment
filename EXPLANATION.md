@@ -48,6 +48,7 @@ For example:
   - Why functions, and not methods on the TreeNode class?
 - Consistent and togglable logging, as opposed to hard-coded console logging in functions
 - Using Map<string, TreeNode> for subordinates, instead of TreeNode[], would speed things up for most functions, though add a bit of management complexity
+- Edge cases...so many unhandled edge cases.  Unit tests and use cases per function could cover all that.
 
 ## Time complexity of functions
 
