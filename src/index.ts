@@ -22,15 +22,7 @@ function print(tree : TreeNode, depth: number = 0){
 
 // Main code goes here
 function main() {
-    console.log("Normalizing JSON file...")
-	 
-    console.log("Generating employee tree...")
-
-    //	 console.log(employees);
-	 
     var tree : TreeNode = generateCompanyStructure(employees);
-
-    //	 console.log(tree);
 
     //	 console.log("[hireEmployee]: Added new employee (Jeb) with Sarah as their boss")
     hireEmployee(tree,

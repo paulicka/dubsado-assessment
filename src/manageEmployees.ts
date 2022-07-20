@@ -63,17 +63,21 @@ function generateTreeNode(employee: Employee) : TreeNode {
  * @returns {TreeNode}
  */
 export function generateCompanyStructure(employees : Employee[]) : TreeNode {
-  var tree : TreeNode = null;
+    console.log("Normalizing JSON file...")
+    console.log("Generating employee tree...")
+
+    var tree : TreeNode = null;
   
-  lookup = new Map<string, TreeNode>();
+    lookup = new Map<string, TreeNode>();
   
-  employees.forEach((employee: Employee) => {
-    //console.log("name ", name, " email ", email);
-    var node : TreeNode = generateTreeNode(employee);
-    if (node.boss === null){
-      tree = node;
-    }
-  });
+    employees.forEach((employee: Employee) => {
+	var node : TreeNode = generateTreeNode(employee);
+
+	if (node.boss === null){
+	    console.assert(tree === null);
+	    tree = node;
+	}
+    });
   
   return tree;
 }
@@ -154,7 +158,7 @@ export function fireEmployee(tree: TreeNode, name: string) : void {
  * @param {string} employeeName
  * @returns {void}
  */
-export function promoteEmployee(tree: TreeNode, employeeName: string) : void {
+export function promoteEmployee(tree: TreeNode, employeeName: string, demote: boolean = false) : void {
     var employee : TreeNode = lookup.get(employeeName);
     console.assert(employee !== null);
     console.assert(employee.boss !== null);
@@ -184,8 +188,12 @@ export function promoteEmployee(tree: TreeNode, employeeName: string) : void {
 
     boss.boss = employee;
     employee.boss = bossBoss;
-    
-    console.log("[promoteEmployee]: Promoted " + employee.name + " and made " + boss.name + " their subordinate");
+
+    if (demote){
+	console.log("[demoteEmployee]: Demoted employee (demoted " + boss.name + " and replaced with " + employee.name + ")");	
+    } else {
+	console.log("[promoteEmployee]: Promoted " + employee.name + " and made " + boss.name + " their subordinate");
+    }
 }
 
 /**
@@ -198,5 +206,5 @@ export function promoteEmployee(tree: TreeNode, employeeName: string) : void {
  * @returns {void}
  */
 export function demoteEmployee(tree: TreeNode, employeeName: string, subordinateName: string) : void {
-    promoteEmployee(tree, subordinateName);
+    promoteEmployee(tree, subordinateName, true);
 }

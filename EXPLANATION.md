@@ -37,6 +37,7 @@ It works for the moment...
 As this was my first foray in a while into Typescript, I imagine there are many.
 
 For example:
+- What IDE do people at Dubsado use for Typescript?
 - I looked into making unit tests, but the installation requirements slowed me down.  This would be the first thing I would learn to do in future projects.
 - Is there a common way to do module-level variables?
 - There is no error handling, or pretty much any possible feedback, other than the requested console output.
@@ -45,13 +46,14 @@ For example:
 - Code layout:
   - Why two files? (not counting index.ts)
   - Why functions, and not methods on the TreeNode class?
-- Consistent and togglable logging
-- Using Map<string, TreeNode>  for subordinates instead of TreeNode[], would speed things up for most functions, though add a bit of management complexity
+- Consistent and togglable logging, as opposed to hard-coded console logging in functions
+- Using Map<string, TreeNode> for subordinates, instead of TreeNode[], would speed things up for most functions, though add a bit of management complexity
 
 ## Time complexity of functions
 
 manageEmployees.ts:
 - generateCompanyStructure() - O(n) by number of records, insertion is trivial since lookup is O(1) with the Map.
+  NOTE:  There is a potential error condition if the records have employees referring to their boss before the boss is handled.  This could be fixed with a two-pass system.
 - hireEmployee() - O(1), lookup boss and TreeNode creation are constant time
 - fireEmployee() - O(1) for the lookup, but...a little tricky...there is the fact that we have to look through the boss's subordinates to delete the employee...so if all employees under one boss, this could be O(n).
 - promoteEmployee() - O(1) to lookup employee, boss is a dereference, again, all the time complexity comes from managing the subordinates TreeNode[] arrays.  Hence the recommendation to change that to a Map<string, TreeNode>
@@ -61,9 +63,15 @@ getEmployees.ts:
 - getBoss() - O(1) for employee lookup, then dereference boss
 - getSubordinates() - O(1) for employee lookup, then access subordinates
 - findLowestEmployee() - O(n) traversing whole tree
+  NOTE:  Could keep depth as a property of TreeNode, adding management complexity.
+    Could also cache the lowest employee, and only verify/regenerate with hire/fire/promote/demote
 
 ## Similar functions
 
 In fact, I have implemented demoteEmployee() using promoteEmployee().
 
-This does provide other than the requested and expected console output, but this would be covered by a conversation about where console output should be included amongst the module functions.
+There is simply a flag to change the console output.
+
+## EXTRA CREDIT
+
+I implemented findLowestEmployee().  Note that zero (0) is the top of the tree, not one (1).
