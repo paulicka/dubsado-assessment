@@ -145,9 +145,12 @@ export function fireEmployee(tree: TreeNode, name: string) : void {
 	subordinate.subordinates.forEach(sub => {
 	    sub.boss = subordinate;
 	});
+
+	console.log("[fireEmployee]: Fired " + name + " and replaced with " + subordinate.name);
     }
+    // NOTE:  What if there is no subordinate?  Just ignore...
+    
     lookup.delete(name);
-    console.log("[fireEmployee]: Fired " + name + " and replaced with " + subordinate.name);
 }
 
 /**
