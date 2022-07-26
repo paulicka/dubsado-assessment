@@ -11,6 +11,15 @@ sudo apt install yarn
 sudo apt install node-typescript
 ```
 
+```
+hanumanji@quasar:~/Documents/dubsado/assessment$ yarn -v
+1.22.19
+hanumanji@quasar:~/Documents/dubsado/assessment$ tsc -v
+Version 3.8.3
+hanumanji@quasar:~/Documents/dubsado/assessment$ node -v
+v10.19.0
+```
+
 ## Running the App
 
 To run the code, as in the README.md, just:
